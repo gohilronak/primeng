@@ -2459,6 +2459,8 @@ export class EditableColumn implements AfterViewInit {
 
     @Input() pEditableColumnDisabled: boolean;
 
+    emitFocusOut = false;
+
     constructor(public dt: Table, public el: ElementRef, public domHandler: DomHandler, public zone: NgZone) {}
 
     ngAfterViewInit() {
@@ -2476,10 +2478,6 @@ export class EditableColumn implements AfterViewInit {
         if (this.isEnabled()) {
             if (this.dt.editingCell) {
                 if (this.dt.editingCell !== this.el.nativeElement) {
-                    if (!this.isValid()) {
-                        return;
-                    }
-        
                     this.domHandler.removeClass(this.dt.editingCell, 'ui-editing-cell');
                     this.openCell();
                 }
@@ -2502,6 +2500,17 @@ export class EditableColumn implements AfterViewInit {
                 }
             }, 50);
         });
+        this.emitFocusOut = true;
+    }
+
+    @HostListener('focusout', ['$event'])
+    onFocusOut($event) {
+        if(this.emitFocusOut) {
+            this.dt.editingCell = null;
+            // this.domHandler.removeClass(this.dt.editingCell, 'ui-editing-cell');
+            this.emitFocusOut = false;
+            this.dt.onEditComplete.emit({ field: this.field, data: this.data });
+        }
     }
 
     @HostListener('keydown', ['$event'])
@@ -2509,28 +2518,25 @@ export class EditableColumn implements AfterViewInit {
         if (this.isEnabled()) {
             //enter
             if (event.keyCode == 13) {
-                if (this.isValid()) {
-                    this.domHandler.removeClass(this.dt.editingCell, 'ui-editing-cell');
-                    this.dt.editingCell = null;
-                    this.dt.onEditComplete.emit({ field: this.field, data: this.data });
-                }
-    
+                this.emitFocusOut = false;
+                this.domHandler.removeClass(this.dt.editingCell, 'ui-editing-cell');
+                this.dt.editingCell = null;
+                this.dt.onEditComplete.emit({ field: this.field, data: this.data });
                 event.preventDefault();
             }
     
             //escape
             else if (event.keyCode == 27) {
-                if (this.isValid()) {
-                    this.domHandler.removeClass(this.dt.editingCell, 'ui-editing-cell');
-                    this.dt.editingCell = null;
-                    this.dt.onEditCancel.emit({ field: this.field, data: this.data });
-                }
-    
+                this.emitFocusOut = false;
+                this.domHandler.removeClass(this.dt.editingCell, 'ui-editing-cell');
+                this.dt.editingCell = null;
+                this.dt.onEditCancel.emit({ field: this.field, data: this.data });
                 event.preventDefault();
             }
     
             //tab
             else if (event.keyCode == 9) {
+                this.emitFocusOut = false;
                 this.dt.onEditComplete.emit({ field: this.field, data: this.data });
                 
                 if (event.shiftKey)
