@@ -16,7 +16,7 @@ import { TableModule } from '../../../components/table/table';
 import { SliderModule } from '../../../components/slider/slider';
 import { MultiSelectModule } from '../../../components/multiselect/multiselect';
 import { ContextMenuModule } from '../../../components/contextmenu/contextmenu';
-import { GrowlModule } from '../../../components/growl/growl';
+import { ToastModule } from '../../../components/toast/toast';
 import { ButtonModule } from '../../../components/button/button';
 import { DialogModule } from '../../../components/dialog/dialog';
 import { DropdownModule } from '../../../components/dropdown/dropdown';
@@ -31,6 +31,8 @@ import { TableContextMenuDemo } from './tablecontextmenudemo';
 import { TableColResizeDemo } from './tablecolresizedemo';
 import { TableReorderDemo } from './tablereorderdemo';
 import { TableEditDemo } from './tableeditdemo';
+import { TableStateDemo } from './tablestatedemo';
+import { TableStickyDemo } from './tablestickydemo';
 import { TableRowGroupDemo } from './tablerowgroupdemo';
 import { TabViewModule } from '../../../components/tabview/tabview';
 import { CodeHighlighterModule } from '../../../components/codehighlighter/codehighlighter';
@@ -47,7 +49,7 @@ import { CodeHighlighterModule } from '../../../components/codehighlighter/codeh
 		ContextMenuModule,
 		DropdownModule,
 		ButtonModule,
-		GrowlModule,
+		ToastModule,
 		InputTextModule,
 		TabViewModule,
 		CodeHighlighterModule
@@ -73,7 +75,9 @@ import { CodeHighlighterModule } from '../../../components/codehighlighter/codeh
 		TableColResizeDemo,
 		TableReorderDemo,
 		TableEditDemo,
-		TableRowGroupDemo
+        TableRowGroupDemo,
+        TableStateDemo,
+        TableStickyDemo
 	]
 })
 export class TableDemoModule { }

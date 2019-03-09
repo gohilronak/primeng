@@ -8,7 +8,7 @@
 </div>
 
 <div class="content-section implementation">
-    <p-growl [(value)]="msgs"></p-growl>
+    <p-toast [style]="{marginTop: '80px'}"></p-toast>
 
     <h3 class="first">Single</h3>
     <p-treeTable [value]="files1" [columns]="cols" selectionMode="single" [(selection)]="selectedNode1" dataKey="name">
@@ -20,7 +20,7 @@
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
-            <tr [ttSelectableRow]="rowNode">
+            <tr [ttRow]="rowNode" [ttRow]="rowNode" [ttSelectableRow]="rowNode">
                 <td *ngFor="let col of columns; let i = index">
                     <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
                     {{rowData[col.field]}}
@@ -44,7 +44,7 @@
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
-            <tr [ttSelectableRow]="rowNode">
+            <tr [ttRow]="rowNode" [ttRow]="rowNode" [ttSelectableRow]="rowNode">
                 <td *ngFor="let col of columns; let i = index">
                     <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
                     {{rowData[col.field]}}
@@ -73,7 +73,7 @@
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
-            <tr [ttSelectableRow]="rowNode">
+            <tr [ttRow]="rowNode" [ttRow]="rowNode" [ttSelectableRow]="rowNode">
                 <td *ngFor="let col of columns; let i = index">
                     <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
                     {{rowData[col.field]}}
@@ -103,7 +103,7 @@
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
-            <tr [ttSelectableRow]="rowNode">
+            <tr [ttRow]="rowNode" [ttRow]="rowNode" [ttSelectableRow]="rowNode">
                 <td *ngFor="let col of columns; let i = index">
                     <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
                     {{rowData[col.field]}}
@@ -182,9 +182,7 @@ export class TreeTableSelectionDemo &#123;
 
     cols: any[];
 
-    msgs: Message[];
-
-    constructor(private nodeService: NodeService) &#123; &#125;
+    constructor(private nodeService: NodeService, private messageService: MessageService) &#123; &#125;
 
     ngOnInit() &#123;
         this.nodeService.getFilesystem().then(files => this.files1 = files);
@@ -201,13 +199,11 @@ export class TreeTableSelectionDemo &#123;
     &#125;
 
     nodeSelect(event) &#123;
-        this.msgs = [];
-        this.msgs.push(&#123;severity: 'info', summary: 'Node Selected', detail: event.node.data.name&#125;);
+        this.messageService.add(&#123;severity: 'info', summary: 'Node Selected', detail: event.node.data.name&#125;);
     &#125;
 
     nodeUnselect(event) &#123;
-        this.msgs = [];
-        this.msgs.push(&#123;severity: 'info', summary: 'Node Unselected', detail: event.node.data.name&#125;);
+        this.messageService.add(&#123;severity: 'info', summary: 'Node Unselected', detail: event.node.data.name&#125;);
     &#125;
 &#125;
 </code>
@@ -221,7 +217,7 @@ export class TreeTableSelectionDemo &#123;
             </a>
 <pre>
 <code class="language-markup" pCode ngNonBindable>
-&lt;p-growl [(value)]="msgs"&gt;&lt;/p-growl&gt;
+&lt;p-toast [style]="&#123;marginTop: '80px'&#125;"&gt;&lt;/p-toast&gt;
 
 &lt;h3 class="first"&gt;Single&lt;/h3&gt;
 &lt;p-treeTable [value]="files1" [columns]="cols" selectionMode="single" [(selection)]="selectedNode1" dataKey="name"&gt;
@@ -233,7 +229,7 @@ export class TreeTableSelectionDemo &#123;
         &lt;/tr&gt;
     &lt;/ng-template&gt;
     &lt;ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns"&gt;
-        &lt;tr [ttSelectableRow]="rowNode"&gt;
+        &lt;tr [ttRow]="rowNode" [ttSelectableRow]="rowNode"&gt;
             &lt;td *ngFor="let col of columns; let i = index"&gt;
                 &lt;p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"&gt;&lt;/p-treeTableToggler&gt;
                 &#123;&#123;rowData[col.field]&#125;&#125;
@@ -257,7 +253,7 @@ export class TreeTableSelectionDemo &#123;
         &lt;/tr&gt;
     &lt;/ng-template&gt;
     &lt;ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns"&gt;
-        &lt;tr [ttSelectableRow]="rowNode"&gt;
+        &lt;tr [ttRow]="rowNode" [ttSelectableRow]="rowNode"&gt;
             &lt;td *ngFor="let col of columns; let i = index"&gt;
                 &lt;p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"&gt;&lt;/p-treeTableToggler&gt;
                 &#123;&#123;rowData[col.field]&#125;&#125;
@@ -286,7 +282,7 @@ export class TreeTableSelectionDemo &#123;
         &lt;/tr&gt;
     &lt;/ng-template&gt;
     &lt;ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns"&gt;
-        &lt;tr [ttSelectableRow]="rowNode"&gt;
+        &lt;tr [ttRow]="rowNode" [ttSelectableRow]="rowNode"&gt;
             &lt;td *ngFor="let col of columns; let i = index"&gt;
                 &lt;p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"&gt;&lt;/p-treeTableToggler&gt;
                 &#123;&#123;rowData[col.field]&#125;&#125;
@@ -316,7 +312,7 @@ export class TreeTableSelectionDemo &#123;
         &lt;/tr&gt;
     &lt;/ng-template&gt;
     &lt;ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns"&gt;
-        &lt;tr [ttSelectableRow]="rowNode"&gt;
+        &lt;tr [ttRow]="rowNode" [ttSelectableRow]="rowNode"&gt;
             &lt;td *ngFor="let col of columns; let i = index"&gt;
                 &lt;p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"&gt;&lt;/p-treeTableToggler&gt;
                 &#123;&#123;rowData[col.field]&#125;&#125;

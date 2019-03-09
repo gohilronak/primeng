@@ -3,15 +3,13 @@ import {CommonModule} from '@angular/common';
 import {DomHandler} from '../dom/domhandler';
 
 @Directive({
-    selector: '[pDraggable]',
-    host: {
-        '[draggable]': 'true'
-    },
-    providers: [DomHandler]
+    selector: '[pDraggable]'
 })
 export class Draggable implements AfterViewInit, OnDestroy {
     
     @Input('pDraggable') scope: string;
+
+    @Input() pDraggableDisabled: boolean;
         
     @Input() dragEffect: string;
     
@@ -31,10 +29,13 @@ export class Draggable implements AfterViewInit, OnDestroy {
 
     mouseUpListener: any;
         
-    constructor(public el: ElementRef, public domHandler: DomHandler, public zone: NgZone) {}
+    constructor(public el: ElementRef, public zone: NgZone) {}
     
     ngAfterViewInit() {
-        this.bindMouseListeners();
+        if (!this.pDraggableDisabled) {
+            this.el.nativeElement.draggable = true;
+            this.bindMouseListeners();
+        }
     }
 
     bindDragListener() {
@@ -114,7 +115,7 @@ export class Draggable implements AfterViewInit, OnDestroy {
     
     allowDrag() : boolean {
         if(this.dragHandle && this.handle)
-            return this.domHandler.matches(this.handle, this.dragHandle);
+            return DomHandler.matches(this.handle, this.dragHandle);
         else
             return true;
     }
@@ -127,12 +128,13 @@ export class Draggable implements AfterViewInit, OnDestroy {
 }
 
 @Directive({
-    selector: '[pDroppable]',
-    providers: [DomHandler]
+    selector: '[pDroppable]'
 })
 export class Droppable implements AfterViewInit, OnDestroy {
     
     @Input('pDroppable') scope: string|string[];
+
+    @Input() pDroppableDisabled: boolean;
         
     @Input() dropEffect: string;
         
@@ -142,12 +144,14 @@ export class Droppable implements AfterViewInit, OnDestroy {
     
     @Output() onDrop: EventEmitter<any> = new EventEmitter();
     
-    constructor(public el: ElementRef, public domHandler: DomHandler, public zone: NgZone) {}
+    constructor(public el: ElementRef, public zone: NgZone) {}
 
     dragOverListener: any;
 
     ngAfterViewInit() {
-        this.bindDragOverListener();
+        if (!this.pDroppableDisabled) {
+            this.bindDragOverListener();
+        }
     }
 
     bindDragOverListener() {

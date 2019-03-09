@@ -6,7 +6,7 @@
 </div>
 
 <div class="content-section implementation">
-    <p-growl [value]="msgs"></p-growl>
+    <p-toast [style]="{marginTop: '80px'}"></p-toast>
 
     <h3 class="first">Basic</h3>
     <p-tree [value]="filesTree0"></p-tree>
@@ -34,7 +34,7 @@
     <h3>Template</h3>
     <p-tree [value]="filesTree5">
         <ng-template let-node pTemplate="default">
-            <input [(ngModel)]="node.label" type="text" style="width:100%">
+            <input [(ngModel)]="node.label" type="text" style="width:100%" class="ui-inputtext">
         </ng-template>
     </p-tree>
 
@@ -46,7 +46,7 @@
     <div class="ui-g ui-fluid">
         <div class="ui-g-12 ui-md-3">
             <h4>Files</h4>
-            <p-tree [value]="filesTree7" draggableNodes="true" droppableNodes="true" dragdropScope="files"></p-tree>
+            <p-tree [value]="filesTree7" draggableNodes="true" droppableNodes="true" droppableScope="files" draggableScope="server2" ></p-tree>
         </div>
 
         <div class="ui-g-12 ui-md-1" style="text-align:center">
@@ -55,7 +55,7 @@
 
         <div class="ui-g-12 ui-md-3">
             <h4>Server 1</h4>
-            <p-tree [value]="filesTree8" draggableNodes="true" droppableNodes="true" dragdropScope="files"></p-tree>
+            <p-tree [value]="filesTree8" draggableNodes="true" droppableNodes="true"  droppableScope="server1" draggableScope="files"></p-tree>
         </div>
 
         <div class="ui-g-12 ui-md-1" style="text-align:center">
@@ -64,7 +64,7 @@
 
         <div class="ui-g-12 ui-md-3">
             <h4>Server 2</h4>
-            <p-tree [value]="filesTree9" draggableNodes="true" droppableNodes="true" dragdropScope="other"></p-tree>
+            <p-tree [value]="filesTree9" draggableNodes="true" droppableNodes="true"  droppableScope="server2" draggableScope="server1"></p-tree>
         </div>
 
         <div class="ui-g-12 ui-md-1">
@@ -538,6 +538,25 @@ import &#123;TreeDragDropService&#125; from 'primeng/api';
 </code>
 </pre>
 
+            <p>In case, a drop should be accepted based on a condition, enable validateDrop property, define an event handler for onNodeDrop where the passed event and call the accept callback of the event
+                to accept a drop. Simply omitting the call of accept() will reject the drop.
+            </p>
+<pre>
+<code class="language-markup" pCode ngNonBindable>
+&lt;p-tree [value]="files" draggableNodes="true" droppableNodes="true" [validateDrop]="true" (onNodeDrop)="onDrop($event)"&gt;&lt;/p-tree&gt;
+</code>
+</pre>
+
+<pre>
+<code class="language-typescript" pCode ngNonBindable>
+onDrop(event) {
+    if (condition) {
+        event.accept();
+    }
+}
+</code>
+</pre>
+
             <h3>Loading Status</h3>
             <p>Tree has a loading property, when enabled a spinner icon is displayed to indicate data load.</p>
             <p>An optional loadingIcon property can be passed in case you prefer a different icon.</p>
@@ -640,6 +659,12 @@ import &#123;TreeDragDropService&#125; from 'primeng/api';
                             <td>string</td>
                             <td>fa-circle-o-notch</td>
                             <td>The icon to show while indicating data load is in progress.</td>
+                        </tr>
+                        <tr>
+                            <td>validateDrop</td>
+                            <td>boolean</td>
+                            <td>false</td>
+                            <td>When enabled, drop can be accepted or rejected based on condition defined at onNodeDrop.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -764,7 +789,7 @@ import &#123;TreeDragDropService&#125; from 'primeng/api';
             </a>
 <pre>
 <code class="language-markup" pCode ngNonBindable>
-&lt;p-growl [value]="msgs"&gt;&lt;/p-growl&gt;
+&lt;p-toast [style]="&#123;marginTop: '80px'&#125;"&gt;&lt;/p-toast&gt;
 
 &lt;h3 class="first"&gt;Basic&lt;/h3&gt;
 &lt;p-tree [value]="filesTree0"&gt;&lt;/p-tree&gt;
@@ -792,7 +817,7 @@ import &#123;TreeDragDropService&#125; from 'primeng/api';
 &lt;h3&gt;Template&lt;/h3&gt;
 &lt;p-tree [value]="filesTree5"&gt;
     &lt;ng-template let-node pTemplate="default"&gt;
-        &lt;input [(ngModel)]="node.label" type="text" style="width:100%"&gt;
+        &lt;input [(ngModel)]="node.label" type="text" style="width:100%" class="ui-inputtext"&gt;
     &lt;/ng-template&gt;
 &lt;/p-tree&gt;
 
@@ -804,7 +829,7 @@ import &#123;TreeDragDropService&#125; from 'primeng/api';
 &lt;div class="ui-g ui-fluid"&gt;
     &lt;div class="ui-g-12 ui-md-3"&gt;
         &lt;h4&gt;Files&lt;/h4&gt;
-        &lt;p-tree [value]="filesTree7" draggableNodes="true" droppableNodes="true" dragdropScope="files"&gt;&lt;/p-tree&gt;
+        &lt;p-tree [value]="filesTree7" draggableNodes="true" droppableNodes="true" droppableScope="files" draggableScope="server2"&gt;&lt;/p-tree&gt;
     &lt;/div&gt;
 
     &lt;div class="ui-g-12 ui-md-1" style="text-align:center"&gt;
@@ -813,7 +838,7 @@ import &#123;TreeDragDropService&#125; from 'primeng/api';
 
     &lt;div class="ui-g-12 ui-md-3"&gt;
         &lt;h4&gt;Server 1&lt;/h4&gt;
-        &lt;p-tree [value]="filesTree8" draggableNodes="true" droppableNodes="true" dragdropScope="files"&gt;&lt;/p-tree&gt;
+        &lt;p-tree [value]="filesTree8" draggableNodes="true" droppableNodes="true" droppableScope="server1" draggableScope="files"&gt;&lt;/p-tree&gt;
     &lt;/div&gt;
 
     &lt;div class="ui-g-12 ui-md-1" style="text-align:center"&gt;
@@ -822,7 +847,7 @@ import &#123;TreeDragDropService&#125; from 'primeng/api';
 
     &lt;div class="ui-g-12 ui-md-3"&gt;
         &lt;h4&gt;Server 2&lt;/h4&gt;
-        &lt;p-tree [value]="filesTree9" draggableNodes="true" droppableNodes="true" dragdropScope="other"&gt;&lt;/p-tree&gt;
+        &lt;p-tree [value]="filesTree9" draggableNodes="true" droppableNodes="true" droppableScope="server2" draggableScope="server1"&gt;&lt;/p-tree&gt;
     &lt;/div&gt;
 
     &lt;div class="ui-g-12 ui-md-1"&gt;
@@ -846,8 +871,6 @@ import &#123;TreeDragDropService&#125; from 'primeng/api';
 <pre>
 <code class="language-typescript" pCode ngNonBindable>
 export class TreeDemo implements OnInit &#123;
-
-    msgs: Message[];
 
     @ViewChild('expandingTree')
     expandingTree: Tree;
@@ -880,7 +903,7 @@ export class TreeDemo implements OnInit &#123;
 
     loading: boolean;
 
-    constructor(private nodeService: NodeService) &#123; &#125;
+    constructor(private nodeService: NodeService, private messageService: MessageService) &#123; &#125;
 
     ngOnInit() &#123;
         this.loading = true;
@@ -928,18 +951,15 @@ export class TreeDemo implements OnInit &#123;
     &#125;
 
     nodeSelect(event) &#123;
-        this.msgs = [];
-        this.msgs.push(&#123;severity: 'info', summary: 'Node Selected', detail: event.node.label&#125;);
+        this.messageService.add(&#123;severity: 'info', summary: 'Node Selected', detail: event.node.label&#125;);
     &#125;
 
     nodeUnselect(event) &#123;
-        this.msgs = [];
-        this.msgs.push(&#123;severity: 'info', summary: 'Node Unselected', detail: event.node.label&#125;);
+        this.messageService.add(&#123;severity: 'info', summary: 'Node Unselected', detail: event.node.label&#125;);
     &#125;
 
     nodeExpandMessage(event) &#123;
-        this.msgs = [];
-        this.msgs.push(&#123;severity: 'info', summary: 'Node Expanded', detail: event.node.label&#125;);
+        this.messageService.add(&#123;severity: 'info', summary: 'Node Expanded', detail: event.node.label&#125;);
     &#125;
 
     nodeExpand(event) &#123;
@@ -950,8 +970,7 @@ export class TreeDemo implements OnInit &#123;
     &#125;
 
     viewFile(file: TreeNode) &#123;
-        this.msgs = [];
-        this.msgs.push(&#123;severity: 'info', summary: 'Node Selected with Right Click', detail: file.label&#125;);
+        this.messageService.add(&#123;severity: 'info', summary: 'Node Selected with Right Click', detail: file.label&#125;);
     &#125;
 
     unselectFile() &#123;
