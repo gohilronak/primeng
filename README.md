@@ -35,29 +35,60 @@ PrimeNG is available at NPM, if you have an existing application run the followi
 
 ```
 npm install primeng --save
+npm install primeicons --save
 ```
 
 #### Angular CLI Integration
 
-Add PrimeNG and FontAwesome as a dependencies.
+Add PrimeNG and PrimeIcons as a dependencies.
 
 ```
 "dependencies": {
   //...
-  "primeng": "^5.2.5",
-  "font-awesome": "^4.7.0"
+  "primeng": "^7.0.0",
+  "primeicons": "^1.0.0"
 },
 ```
 
-Configure required styles at the styles section, example below uses the Omega theme.
+Configure required styles at the styles section, example below uses the Nova Light theme.
 
 ```
 "styles": [
-  "../node_modules/font-awesome/css/font-awesome.min.css",
-  "../node_modules/primeng/resources/themes/omega/theme.css",
-  "../node_modules/primeng/resources/primeng.min.css",
+  "node_modules/primeng/resources/themes/nova-light/theme.css",
+  "node_modules/primeng/resources/primeng.min.css",
+  "node_modules/primeicons/primeicons.css",
   //...
 ],
 ```
 
 That is all, you may now import PrimeNG components, for a working example visit the [PrimeNG CLI QuickStart sample](https://github.com/primefaces/primeng-quickstart-cli) at GitHub.
+
+
+## Compilation step:
+#### Reference
+- https://forum.primefaces.org/viewtopic.php?t=48722
+- https://stackoverflow.com/questions/41310398/primeng-how-to-pack-or-build-the-project-after-making-changes
+- Publish package: https://zellwk.com/blog/publish-to-npm/
+
+Add below command in package.json scripts 
+    "build-components": "ngc -p tsconfig-release.json",
+    "build-assets": "gulp build-assets",
+    "build-styles": "node-sass src/assets/components -o src/assets/components",
+    "build-exports": "gulp build-exports",
+    "build-redistribute": "npm run build-components && npm run build-assets && npm run build-styles && npm run build-exports"
+
+
+Compilation:
+execute below commands:
+- `npm run build-redistributable`
+or 
+- `npm run build-components`
+- `npm run build-assets`
+- `npm run build-styles`
+- `npm run build-exports`
+
+Then copy `package.json`, `components`, `resources` folder into `dist` folder.
+in command prompt go to `dist` folder.
+execute below command to publish in npm registry
+- `npm login`
+- `npm publish --access public`

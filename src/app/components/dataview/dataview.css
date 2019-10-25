@@ -39,6 +39,10 @@
     width: 100%;
 }
 
+.ui-dataview .ui-dataview-emptymessage {
+    padding: .5em .75em;
+}
+
 /* Loader */
 .ui-dataview-loading {
     position: absolute;
@@ -56,4 +60,8 @@
     z-index: 2;
     margin-top: -1em;
     margin-left: -1em;
+}
+
+.ui-dataview-loading-icon {
+    font-size: 2em;
 }

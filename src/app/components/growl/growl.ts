@@ -14,10 +14,10 @@ import {Subscription}   from 'rxjs';
                     'ui-growl-message-error':msg.severity == 'error','ui-growl-message-success':msg.severity == 'success'}"
                     (click)="onMessageClick(i)" (mouseenter)="onMessageHover(i)">
                 <div class="ui-growl-item">
-                     <div class="ui-growl-icon-close fa fa-close" (click)="remove(i,msgel)"></div>
-                     <span class="ui-growl-image fa fa-2x"
-                        [ngClass]="{'fa-info-circle':msg.severity == 'info','fa-exclamation-circle':msg.severity == 'warn',
-                                'fa-close':msg.severity == 'error','fa-check':msg.severity == 'success'}"></span>
+                     <div class="ui-growl-icon-close pi pi-times" (click)="remove(i,msgel)"></div>
+                     <span class="ui-growl-image pi"
+                        [ngClass]="{'pi-info-circle':msg.severity == 'info','pi-exclamation-triangle':msg.severity == 'warn',
+                                'pi-times':msg.severity == 'error','pi-check':msg.severity == 'success'}"></span>
                      <div class="ui-growl-message">
                         <span class="ui-growl-title">{{msg.summary}}</span>
                         <p [innerHTML]="msg.detail||''"></p>
@@ -26,8 +26,7 @@ import {Subscription}   from 'rxjs';
                 </div>
             </div>
         </div>
-    `,
-    providers: [DomHandler]
+    `
 })
 export class Growl implements AfterViewInit,DoCheck,OnDestroy {
 
@@ -69,7 +68,7 @@ export class Growl implements AfterViewInit,DoCheck,OnDestroy {
     
     closeIconClick: boolean;
 
-    constructor(public el: ElementRef, public domHandler: DomHandler, public differs: IterableDiffers, @Optional() public messageService: MessageService, private zone: NgZone) {
+    constructor(public el: ElementRef, public differs: IterableDiffers, @Optional() public messageService: MessageService, private zone: NgZone) {
         this.differ = differs.find([]).create(null);
         
         if(messageService) {
@@ -136,7 +135,7 @@ export class Growl implements AfterViewInit,DoCheck,OnDestroy {
         if(this.autoZIndex) {
             this.containerViewChild.nativeElement.style.zIndex = String(this.baseZIndex + (++DomHandler.zindex));
         }
-        this.domHandler.fadeIn(this.containerViewChild.nativeElement, 250);
+        DomHandler.fadeIn(this.containerViewChild.nativeElement, 250);
         
         if(!this.sticky) {
             this.initTimeout();
@@ -158,7 +157,7 @@ export class Growl implements AfterViewInit,DoCheck,OnDestroy {
         
     remove(index: number, msgel: any) {      
         this.closeIconClick = true;  
-        this.domHandler.fadeOut(msgel, 250);
+        DomHandler.fadeOut(msgel, 250);
         
         setTimeout(() => {
             this.preventRerender = true;
@@ -176,7 +175,7 @@ export class Growl implements AfterViewInit,DoCheck,OnDestroy {
     
     removeAll() {
         if(this.value && this.value.length) {            
-            this.domHandler.fadeOut(this.containerViewChild.nativeElement, 250);
+            DomHandler.fadeOut(this.containerViewChild.nativeElement, 250);
             
             setTimeout(() => {                
                 this.value.forEach((msg,index) => this.onClose.emit({message:this.value[index]}));

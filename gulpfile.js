@@ -48,7 +48,7 @@ gulp.task('themes', function() {
 
 gulp.task('build-exports', function() {
     return gulp.src(['exports/*.js','exports/*.d.ts'])
-        .pipe(gulp.dest('./'));
+        .pipe(gulp.dest('./dist'));
 });
 
 //Cleaning previous gulp tasks from project
